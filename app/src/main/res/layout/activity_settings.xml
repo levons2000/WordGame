@@ -14,6 +14,7 @@
         android:text="@string/minutes_to_end"
         android:textColor="@color/colorPrimary"
         android:textSize="25sp"
+        android:layout_marginTop="15dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -36,4 +37,66 @@
         app:layout_constraintEnd_toEndOf="@+id/minutes_to_end_title"
         app:layout_constraintStart_toStartOf="@id/minutes_to_end_title"
         app:layout_constraintTop_toBottomOf="@id/minutes_to_end_text" />
+
+    <TextView
+        android:id="@+id/square_board_size_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/square_board_size"
+        android:textColor="@color/colorPrimary"
+        android:textSize="25sp"
+        android:layout_marginTop="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/minutes_to_end_seek_bar" />
+
+    <TextView
+        android:id="@+id/square_board_size_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorPrimary"
+        android:textSize="25sp"
+        app:layout_constraintEnd_toEndOf="@+id/square_board_size_title"
+        app:layout_constraintStart_toStartOf="@+id/square_board_size_title"
+        app:layout_constraintTop_toBottomOf="@id/square_board_size_title"/>
+
+    <SeekBar
+        android:id="@+id/square_board_size_seek_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        app:layout_constraintEnd_toEndOf="@+id/square_board_size_title"
+        app:layout_constraintStart_toStartOf="@id/square_board_size_title"
+        app:layout_constraintTop_toBottomOf="@id/square_board_size_text" />
+
+    <TextView
+        android:id="@+id/weight_of_letters_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/weight_of_letters"
+        android:textColor="@color/colorPrimary"
+        android:textSize="25sp"
+        android:layout_marginTop="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/square_board_size_seek_bar" />
+
+    <TextView
+        android:id="@+id/weight_of_letters_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorPrimary"
+        android:textSize="25sp"
+        app:layout_constraintEnd_toEndOf="@+id/weight_of_letters_title"
+        app:layout_constraintStart_toStartOf="@+id/weight_of_letters_title"
+        app:layout_constraintTop_toBottomOf="@id/weight_of_letters_title"/>
+
+    <SeekBar
+        android:id="@+id/weight_of_letters_seek_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        app:layout_constraintEnd_toEndOf="@+id/weight_of_letters_title"
+        app:layout_constraintStart_toStartOf="@id/weight_of_letters_title"
+        app:layout_constraintTop_toBottomOf="@id/weight_of_letters_text" />
 </androidx.constraintlayout.widget.ConstraintLayout>

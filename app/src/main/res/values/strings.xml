@@ -3,4 +3,6 @@
     <string name="play_word_game">Play Word Game</string>
     <string name="view_statistics">View Statistics</string>
     <string name="minutes_to_end">Minutes To End</string>
+    <string name="square_board_size">Square Board Size</string>
+    <string name="weight_of_letters">Weight Of Letters</string>
 </resources>

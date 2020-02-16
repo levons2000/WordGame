@@ -110,7 +110,11 @@ public class MainActivity extends AppCompatActivity implements Screen {
         Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
         intent.putExtra("minutesToEnd", currentSettings.getMinutesToEnd());
         intent.putExtra("squareBoardSize", currentSettings.getSquareBoardSize());
-        intent.putExtra("weightOfLetters", currentSettings.getWightOfLetters());
+        intent.putExtra("weightOfLetters", currentSettings.getWeightOfLetters());
+        intent.putExtra("playerName", currentPlayer.getPlayerName());
+        intent.putExtra("currentScore", currentPlayer.getCurrentScore());
+        intent.putExtra("numberOfGames", currentPlayer.getNumberOfGames());
+        intent.putExtra("score", currentPlayer.getScore());
         startActivityForResult(intent, SETTING_REQUEST_CODE);
     }
 
@@ -140,7 +144,7 @@ public class MainActivity extends AppCompatActivity implements Screen {
             if (data != null && data.getExtras() != null) {
                 currentSettings.setMinutesToEnd(data.getExtras().getInt("minutesToEnd"));
                 currentSettings.setSquareBoardSize(data.getExtras().getInt("squareBoardSize"));
-                currentSettings.setWightOfLetters(data.getExtras().getInt("weightOfLetters"));
+                currentSettings.setWeightOfLetters(data.getExtras().getInt("weightOfLetters"));
             }
         }
     }
