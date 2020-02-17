@@ -5,4 +5,7 @@
     <string name="minutes_to_end">Minutes To End</string>
     <string name="square_board_size">Square Board Size</string>
     <string name="weight_of_letters">Weight Of Letters</string>
+    <string name="score">Score</string>
+    <string name="start_score_text">0</string>
+    <string name="write_the_word">Write the word</string>
 </resources>

@@ -3,6 +3,7 @@ package com.example.wordgame;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -99,7 +100,7 @@ public class MainActivity extends AppCompatActivity implements Screen {
     }
 
     private void playWordGame() {
-
+        startActivity(new Intent(MainActivity.this, PlayWordGameActivity.class));
     }
 
     private void viewStatistics() {
