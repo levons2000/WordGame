@@ -3,7 +3,6 @@ package com.example.wordgame;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -20,7 +19,8 @@ import com.example.wordgame.models.Settings;
 
 public class MainActivity extends AppCompatActivity implements Screen {
 
-    public static final int SETTING_REQUEST_CODE = 0;
+    public static final int PLAY_REQUEST_CODE = 0;
+    public static final int SETTING_REQUEST_CODE = 2;
 
     private Player currentPlayer;
     private Settings currentSettings;
@@ -100,7 +100,15 @@ public class MainActivity extends AppCompatActivity implements Screen {
     }
 
     private void playWordGame() {
-        startActivity(new Intent(MainActivity.this, PlayWordGameActivity.class));
+        Intent intent = new Intent(MainActivity.this, PlayWordGameActivity.class);
+        intent.putExtra("minutesToEnd", currentSettings.getMinutesToEnd());
+        intent.putExtra("squareBoardSize", currentSettings.getSquareBoardSize());
+        intent.putExtra("weightOfLetters", currentSettings.getWeightOfLetters());
+        intent.putExtra("playerName", currentPlayer.getPlayerName());
+        intent.putExtra("currentScore", currentPlayer.getCurrentScore());
+        intent.putExtra("numberOfGames", currentPlayer.getNumberOfGames());
+        intent.putExtra("score", currentPlayer.getScore());
+        startActivityForResult(intent, PLAY_REQUEST_CODE);
     }
 
     private void viewStatistics() {

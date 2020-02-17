@@ -37,10 +37,34 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="15dp"
-        app:layout_constraintBottom_toTopOf="@+id/word_edit_text"
+        app:layout_constraintBottom_toTopOf="@+id/timer_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/score_text" />
+
+    <TextView
+        android:id="@+id/timer_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:textAlignment="textStart"
+        android:textColor="@color/colorPrimary"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/word_edit_text"
+        app:layout_constraintEnd_toStartOf="@+id/board_refresh_button"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageButton
+        android:id="@+id/board_refresh_button"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_margin="5dp"
+        android:background="@null"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_refresh_black_24dp"
+        app:layout_constraintBottom_toTopOf="@+id/word_enter_button"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <EditText
         android:id="@+id/word_edit_text"
@@ -51,11 +75,11 @@
         android:layout_marginRight="5dp"
         android:hint="@string/write_the_word"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/board_refresh_button"
+        app:layout_constraintEnd_toStartOf="@+id/word_enter_button"
         app:layout_constraintStart_toStartOf="parent" />
 
     <ImageButton
-        android:id="@+id/board_refresh_button"
+        android:id="@+id/word_enter_button"
         android:layout_width="45dp"
         android:layout_height="45dp"
         android:layout_margin="5dp"
