@@ -64,6 +64,7 @@ public class PlayWordGameActivity extends AppCompatActivity implements Screen {
 
     private EditText wordInput;
     private TextView timerText;
+    private TextView scoreText;
     private ImageButton enterButton;
     private ImageButton refreshButton;
 
@@ -132,6 +133,7 @@ public class PlayWordGameActivity extends AppCompatActivity implements Screen {
         wordInput = findViewById(R.id.word_edit_text);
         enterButton = findViewById(R.id.word_enter_button);
         timerText = findViewById(R.id.timer_text);
+        scoreText = findViewById(R.id.score_text);
         refreshButton = findViewById(R.id.board_refresh_button);
         enterButton.setOnClickListener(view -> startMatching(wordInput.getText().toString()));
         refreshButton.setOnClickListener(view -> refreshBoard());
@@ -202,22 +204,231 @@ public class PlayWordGameActivity extends AppCompatActivity implements Screen {
     }
 
     private void startMatching(String word) {
-        char[] characters = word.toCharArray();
+        char[] characters = word.toUpperCase().toCharArray();
+
+        if (characters.length < 2) {
+            return;
+        }
+
         for (int i = 0; i < (int) Math.sqrt(currentList.size()); ++i) {
             for (int j = 0; j < (int) Math.sqrt(currentList.size()); ++j) {
-                if (currentList.get(i * settings.getSquareBoardSize() + (j + 1)))
-                doCharacterMatching(characters, i, j);
+                if (currentList.get(i * settings.getSquareBoardSize() + j).getLetter() == characters[0]) {
+                    if (doCharacterMatching(characters, i, j)) {
+                        currentPlayer.setCurrentScore(currentPlayer.getCurrentScore() + 1);
+                        scoreText.setText(String.valueOf(currentPlayer.getCurrentScore()));
+                        return;
+                    }
+                }
             }
         }
     }
 
     private boolean doCharacterMatching(char[] letters, int line, int column) {
+        return doRightCheck(letters, line, column, 1) ||
+               doLeftCheck(letters, line, column, 1) ||
+               doTopCheck(letters, line, column, 1) ||
+               doBottomCheck(letters, line, column, 1) ||
+               doTopRightCheck(letters, line, column, 1) ||
+               doTopLeftCheck(letters, line, column, 1) ||
+               doBottomRightCheck(letters, line, column, 1) ||
+               doBottomLeftCheck(letters, line, column, 1);
+    }
 
+    private boolean doRightCheck(char[] letters, int line, int column, int index) {
+        boolean isRightSide = column == (settings.getSquareBoardSize() - 1);
+        boolean finalResult;
+        if (!isRightSide) {
+
+            if (index == letters.length) {
+                return true;
+            }
+
+            boolean result = currentList.get((line * settings.getSquareBoardSize() + column) + 1).getLetter() == letters[index];
+
+            if (result) {
+                finalResult = doRightCheck(letters, line, column + 1, ++index);
+            } else {
+                return false;
+            }
+
+        } else {
+            return index == letters.length;
+        }
+
+        return finalResult;
+    }
+
+    private boolean doLeftCheck(char[] letters, int line, int column, int index) {
+        boolean isLeftSide = column == 0;
+        boolean finalResult;
+        if (!isLeftSide) {
+
+            if (index == letters.length) {
+                return true;
+            }
+
+            boolean result = currentList.get((line * settings.getSquareBoardSize() + column) - 1).getLetter() == letters[index];
+
+            if (result) {
+                finalResult = doLeftCheck(letters, line, column - 1, ++index);
+            } else {
+                return false;
+            }
+
+        } else {
+            return index == letters.length;
+        }
+
+        return finalResult;
+    }
+
+    private boolean doTopCheck(char[] letters, int line, int column, int index) {
+        boolean isTopSide = line == 0;
+        boolean finalResult;
+        if (!isTopSide) {
+            if (index == letters.length) {
+                return true;
+            }
+
+            boolean result = currentList.get((line - 1) * settings.getSquareBoardSize() + column).getLetter() == letters[index];
+
+            if (result) {
+                finalResult = doTopCheck(letters, line - 1, column, ++index);
+            } else {
+                return false;
+            }
+
+        } else {
+            return index == letters.length;
+        }
+
+        return finalResult;
+    }
+
+    private boolean doBottomCheck(char[] letters, int line, int column, int index) {
+        boolean isBottomSide = line == (settings.getSquareBoardSize() - 1);
+        boolean finalResult;
+        if (!isBottomSide) {
+            if (index == letters.length) {
+                return true;
+            }
+
+            boolean result = currentList.get((line + 1) * settings.getSquareBoardSize() + column).getLetter() == letters[index];
+
+            if (result) {
+                finalResult = doBottomCheck(letters, line + 1, column, ++index);
+            } else {
+                return false;
+            }
+
+        } else {
+            return index == letters.length;
+        }
+
+        return finalResult;
+    }
+
+    private boolean doTopRightCheck(char[] letters, int line, int column, int index) {
+        boolean isTopSide = line == 0;
+        boolean isRightSide = column == (settings.getSquareBoardSize() - 1);
+        boolean finalResult;
+        if (!isTopSide && !isRightSide) {
+            if (index == letters.length) {
+                return true;
+            }
+
+            boolean result = currentList.get(((line - 1) * settings.getSquareBoardSize() + column) + 1).getLetter() == letters[index];
+
+            if (result) {
+                finalResult = doTopRightCheck(letters, line - 1, column + 1, ++index);
+            } else {
+                return false;
+            }
+
+        } else {
+            return index == letters.length;
+        }
+
+        return finalResult;
+    }
+
+    private boolean doTopLeftCheck(char[] letters, int line, int column, int index) {
+        boolean isTopSide = line == 0;
+        boolean isLeftSide = column == 0;
+        boolean finalResult;
+        if (!isTopSide && !isLeftSide) {
+            if (index == letters.length) {
+                return true;
+            }
+
+            boolean result = currentList.get(((line - 1) * settings.getSquareBoardSize() + column) - 1).getLetter() == letters[index];
+
+            if (result) {
+                finalResult = doTopLeftCheck(letters, line - 1, column - 1, ++index);
+            } else {
+                return false;
+            }
+
+        } else {
+            return index == letters.length;
+        }
+
+        return finalResult;
+    }
+
+    private boolean doBottomRightCheck(char[] letters, int line, int column, int index) {
+        boolean isBottomSide = line == (settings.getSquareBoardSize() - 1);
+        boolean isRightSide = column == (settings.getSquareBoardSize() - 1);
+        boolean finalResult;
+        if (!isBottomSide && !isRightSide) {
+            if (index == letters.length) {
+                return true;
+            }
+
+            boolean result = currentList.get(((line + 1) * settings.getSquareBoardSize() + column) + 1).getLetter() == letters[index];
+
+            if (result) {
+                finalResult = doBottomRightCheck(letters, line + 1, column + 1, ++index);
+            } else {
+                return false;
+            }
+
+        } else {
+            return index == letters.length;
+        }
+
+        return finalResult;
+    }
+
+    private boolean doBottomLeftCheck(char[] letters, int line, int column, int index) {
+        boolean isBottomSide = line == (settings.getSquareBoardSize() - 1);
+        boolean isLeftSide = column == 0;
+        boolean finalResult;
+        if (!isBottomSide && !isLeftSide) {
+            if (index == letters.length) {
+                return true;
+            }
+
+            boolean result = currentList.get(((line + 1) * settings.getSquareBoardSize() + column) - 1).getLetter() == letters[index];
+
+            if (result) {
+                finalResult = doBottomLeftCheck(letters, line + 1, column - 1 , ++index);
+            } else {
+                return false;
+            }
+
+        } else {
+            return index == letters.length;
+        }
+
+        return finalResult;
     }
 
     private void refreshBoard() {
         currentList = getListWithRandomLetters((settings.getSquareBoardSize() * settings.getSquareBoardSize()));
         letterAdapter.setList(currentList);
         letterAdapter.notifyDataSetChanged();
+        currentPlayer.setCurrentScore(currentPlayer.getCurrentScore() - 5);
+        scoreText.setText(String.valueOf(currentPlayer.getCurrentScore()));
     }
 }
