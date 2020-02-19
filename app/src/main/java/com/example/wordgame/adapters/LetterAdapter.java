@@ -42,6 +42,10 @@ public class LetterAdapter extends RecyclerView.Adapter<LetterAdapter.LetterView
         return letters.size();
     }
 
+    public void setList(List<LetterModel> list) {
+        letters = list;
+    }
+
     class LetterViewHolder extends RecyclerView.ViewHolder {
         TextView textView;
          LetterViewHolder(@NonNull View itemView) {
