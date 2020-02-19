@@ -48,8 +48,26 @@ public class MainActivity extends AppCompatActivity implements Screen {
             registerNewPlayer();
         } else {
             currentPlayer = new Player(savedPlayerName, savedCurrentScore, savedNumberOfGames, savedScore);
+            currentPlayer.setTopScores(pref.getInt("firstScore", 0));
+            currentPlayer.setTopScores(pref.getInt("secondScore", 0));
+            currentPlayer.setTopScores(pref.getInt("thirdScore", 0));
+            currentPlayer.setTopScores(pref.getInt("fourthScore", 0));
+            currentPlayer.setTopScores(pref.getInt("fifthScore", 0));
+            currentPlayer.setTopWordScores(pref.getInt("firstWord", 0));
+            currentPlayer.setTopWordScores(pref.getInt("secondWord", 0));
+            currentPlayer.setTopWordScores(pref.getInt("thirdWord", 0));
+            currentPlayer.setTopWordScores(pref.getInt("fourthWord", 0));
+            currentPlayer.setTopWordScores(pref.getInt("fifthWord", 0));
             showMainScreen(pref);
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        playWordGameButton.setEnabled(true);
+        viewStatisticsButton.setEnabled(true);
+        adjustGameSettingsButton.setEnabled(true);
     }
 
     @Override
@@ -61,11 +79,20 @@ public class MainActivity extends AppCompatActivity implements Screen {
 
     private void initViews() {
         playWordGameButton = findViewById(R.id.play_word_game);
-        playWordGameButton.setOnClickListener(view -> playWordGame());
+        playWordGameButton.setOnClickListener(view -> {
+            playWordGame();
+            playWordGameButton.setEnabled(false);
+        });
         viewStatisticsButton = findViewById(R.id.view_statistics);
-        viewStatisticsButton.setOnClickListener(view -> viewStatistics());
+        viewStatisticsButton.setOnClickListener(view -> {
+            viewStatistics();
+            viewStatisticsButton.setEnabled(false);
+        });
         adjustGameSettingsButton = findViewById(R.id.adjust_game_settings);
-        adjustGameSettingsButton.setOnClickListener(view -> adjustGameSettings());
+        adjustGameSettingsButton.setOnClickListener(view -> {
+            adjustGameSettings();
+            adjustGameSettingsButton.setEnabled(false);
+        });
         playerNameText = findViewById(R.id.player_name);
     }
 
@@ -135,6 +162,7 @@ public class MainActivity extends AppCompatActivity implements Screen {
 
     private void playWordGame() {
         Intent intent = new Intent(MainActivity.this, PlayWordGameActivity.class);
+        currentPlayer.setNumberOfGames(currentPlayer.getNumberOfGames() + 1);
         intent.putExtra("minutesToEnd", currentSettings.getMinutesToEnd());
         intent.putExtra("squareBoardSize", currentSettings.getSquareBoardSize());
         intent.putExtra("A", currentSettings.getWeightsOfLetters().get("A"));
@@ -163,14 +191,29 @@ public class MainActivity extends AppCompatActivity implements Screen {
         intent.putExtra("Y", currentSettings.getWeightsOfLetters().get("Y"));
         intent.putExtra("Z", currentSettings.getWeightsOfLetters().get("Z"));
         intent.putExtra("playerName", currentPlayer.getPlayerName());
-        intent.putExtra("currentScore", currentPlayer.getCurrentScore());
+        intent.putExtra("currentScore", 0);
         intent.putExtra("numberOfGames", currentPlayer.getNumberOfGames());
-        intent.putExtra("score", currentPlayer.getScore());
+        intent.putExtra("score", 0);
         startActivityForResult(intent, PLAY_REQUEST_CODE);
     }
 
     private void viewStatistics() {
-
+        Intent intent = new Intent(MainActivity.this, StatisticActivity.class);
+        intent.putExtra("playerName", currentPlayer.getPlayerName());
+        intent.putExtra("currentScore", currentPlayer.getCurrentScore());
+        intent.putExtra("numberOfGames", currentPlayer.getNumberOfGames());
+        intent.putExtra("score", currentPlayer.getScore());
+        intent.putExtra("firstScore", currentPlayer.getTopScores()[0]);
+        intent.putExtra("secondScore", currentPlayer.getTopScores()[1]);
+        intent.putExtra("thirdScore", currentPlayer.getTopScores()[2]);
+        intent.putExtra("fourthScore", currentPlayer.getTopScores()[3]);
+        intent.putExtra("fifthScore", currentPlayer.getTopScores()[4]);
+        intent.putExtra("firstWord", currentPlayer.getTopWordScores()[0]);
+        intent.putExtra("secondWord", currentPlayer.getTopWordScores()[1]);
+        intent.putExtra("thirdWord", currentPlayer.getTopWordScores()[2]);
+        intent.putExtra("fourthWord", currentPlayer.getTopWordScores()[3]);
+        intent.putExtra("fifthWord", currentPlayer.getTopWordScores()[4]);
+        startActivity(intent);
     }
 
     private void adjustGameSettings() {
@@ -241,6 +284,17 @@ public class MainActivity extends AppCompatActivity implements Screen {
         pref.edit().putInt("X", currentSettings.getWeightsOfLetters().get("X")).apply();
         pref.edit().putInt("Y", currentSettings.getWeightsOfLetters().get("Y")).apply();
         pref.edit().putInt("Z", currentSettings.getWeightsOfLetters().get("Z")).apply();
+
+        pref.edit().putInt("firstScore", currentPlayer.getTopScores()[0]).apply();
+        pref.edit().putInt("secondScore", currentPlayer.getTopScores()[1]).apply();
+        pref.edit().putInt("thirdScore", currentPlayer.getTopScores()[2]).apply();
+        pref.edit().putInt("fourthScore", currentPlayer.getTopScores()[3]).apply();
+        pref.edit().putInt("fifthScore", currentPlayer.getTopScores()[4]).apply();
+        pref.edit().putInt("firstWord", currentPlayer.getTopWordScores()[0]).apply();
+        pref.edit().putInt("secondWord", currentPlayer.getTopWordScores()[1]).apply();
+        pref.edit().putInt("thirdWord", currentPlayer.getTopWordScores()[2]).apply();
+        pref.edit().putInt("fourthWord", currentPlayer.getTopWordScores()[3]).apply();
+        pref.edit().putInt("fifthWord", currentPlayer.getTopWordScores()[4]).apply();
     }
 
     @Override
@@ -286,6 +340,19 @@ public class MainActivity extends AppCompatActivity implements Screen {
                 currentSettings.getWeightsOfLetters().put("X", data.getExtras().getInt("X"));
                 currentSettings.getWeightsOfLetters().put("Y", data.getExtras().getInt("Y"));
                 currentSettings.getWeightsOfLetters().put("Z", data.getExtras().getInt("Z"));
+            }
+        } else if (requestCode == PLAY_REQUEST_CODE && resultCode == RESULT_OK) {
+            if (data != null && data.getExtras() != null) {
+                currentPlayer.setTopScores(data.getExtras().getInt("firstScore"));
+                currentPlayer.setTopScores(data.getExtras().getInt("secondScore"));
+                currentPlayer.setTopScores(data.getExtras().getInt("thirdScore"));
+                currentPlayer.setTopScores(data.getExtras().getInt("fourthScore"));
+                currentPlayer.setTopScores(data.getExtras().getInt("fifthScore"));
+                currentPlayer.setTopWordScores(data.getExtras().getInt("firstWord"));
+                currentPlayer.setTopWordScores(data.getExtras().getInt("secondWord"));
+                currentPlayer.setTopWordScores(data.getExtras().getInt("thirdWord"));
+                currentPlayer.setTopWordScores(data.getExtras().getInt("fourthWord"));
+                currentPlayer.setTopWordScores(data.getExtras().getInt("fifthWord"));
             }
         }
     }

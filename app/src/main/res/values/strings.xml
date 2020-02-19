@@ -11,4 +11,6 @@
     <string name="letter">Letter</string>
     <string name="weight">Weight</string>
     <string name="set_weight">Set Weight</string>
+    <string name="player_scores">Player Scores</string>
+    <string name="word_points">Word Points</string>
 </resources>

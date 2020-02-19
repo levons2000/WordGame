@@ -34,7 +34,11 @@ public class LetterAdapter extends RecyclerView.Adapter<LetterAdapter.LetterView
 
     @Override
     public void onBindViewHolder(@NonNull LetterAdapter.LetterViewHolder holder, int position) {
-        holder.textView.setText(String.valueOf(letters.get(position).getLetter()));
+        if (String.valueOf(letters.get(position).getLetter()).equals("Q")) {
+            holder.textView.setText(String.format("%su", String.valueOf(letters.get(position).getLetter())));
+        } else {
+            holder.textView.setText(String.valueOf(letters.get(position).getLetter()));
+        }
     }
 
     @Override

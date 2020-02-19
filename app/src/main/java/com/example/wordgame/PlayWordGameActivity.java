@@ -86,6 +86,35 @@ public class PlayWordGameActivity extends AppCompatActivity implements Screen {
         save();
     }
 
+    @Override
+    public void onBackPressed() {
+        Intent resultIntent = new Intent();
+        currentPlayer.setTopScores(Integer.valueOf(scoreText.getText().toString()));
+        resultIntent.putExtra("firstScore", currentPlayer.getTopScores()[0]);
+        resultIntent.putExtra("secondScore", currentPlayer.getTopScores()[1]);
+        resultIntent.putExtra("thirdScore", currentPlayer.getTopScores()[2]);
+        resultIntent.putExtra("fourthScore", currentPlayer.getTopScores()[3]);
+        resultIntent.putExtra("fifthScore", currentPlayer.getTopScores()[4]);
+        resultIntent.putExtra("firstWord", currentPlayer.getTopWordScores()[0]);
+        resultIntent.putExtra("secondWord", currentPlayer.getTopWordScores()[1]);
+        resultIntent.putExtra("thirdWord", currentPlayer.getTopWordScores()[2]);
+        resultIntent.putExtra("fourthWord", currentPlayer.getTopWordScores()[3]);
+        resultIntent.putExtra("fifthWord", currentPlayer.getTopWordScores()[4]);
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("SP", 0);
+        pref.edit().putInt("firstScore", currentPlayer.getTopScores()[0]).apply();
+        pref.edit().putInt("secondScore", currentPlayer.getTopScores()[1]).apply();
+        pref.edit().putInt("thirdScore", currentPlayer.getTopScores()[2]).apply();
+        pref.edit().putInt("fourthScore", currentPlayer.getTopScores()[3]).apply();
+        pref.edit().putInt("fifthScore", currentPlayer.getTopScores()[4]).apply();
+        pref.edit().putInt("firstWord", currentPlayer.getTopWordScores()[0]).apply();
+        pref.edit().putInt("secondWord", currentPlayer.getTopWordScores()[1]).apply();
+        pref.edit().putInt("thirdWord", currentPlayer.getTopWordScores()[2]).apply();
+        pref.edit().putInt("fourthWord", currentPlayer.getTopWordScores()[3]).apply();
+        pref.edit().putInt("fifthWord", currentPlayer.getTopWordScores()[4]).apply();
+        setResult(RESULT_OK, resultIntent);
+        super.onBackPressed();
+    }
+
     private void initCurrentPlayer(Intent intent) {
         if (intent.getExtras() != null && intent.getExtras().getString("playerName") != null) {
             currentPlayer = new Player(
@@ -293,6 +322,20 @@ public class PlayWordGameActivity extends AppCompatActivity implements Screen {
             return;
         }
 
+        if (word.toUpperCase().contains("Q")) {
+            for (int i = 0; i < characters.length; i++) {
+                if (characters[i] == 'Q') {
+                    if(i != characters.length - 1) {
+                        if (characters[i + 1] != 'U') {
+                            return;
+                        }
+                    } else {
+                        return;
+                    }
+                }
+            }
+        }
+
         for (int i = 0; i < (int) Math.sqrt(currentList.size()); ++i) {
             for (int j = 0; j < (int) Math.sqrt(currentList.size()); ++j) {
                 if (currentList.get(i * settings.getSquareBoardSize() + j).getLetter() == characters[0]) {
@@ -303,6 +346,7 @@ public class PlayWordGameActivity extends AppCompatActivity implements Screen {
                         }
                         currentPlayer.setCurrentScore(currentPlayer.getCurrentScore() + point);
                         scoreText.setText(String.valueOf(currentPlayer.getCurrentScore()));
+                        currentPlayer.setTopWordScores(point);
                         return;
                     }
                 }
@@ -330,7 +374,17 @@ public class PlayWordGameActivity extends AppCompatActivity implements Screen {
                 return true;
             }
 
-            boolean result = currentList.get((line * settings.getSquareBoardSize() + column) + 1).getLetter() == letters[index];
+            boolean result = true;
+
+            if (letters[index] == 'U') {
+                if (letters[index - 1] == 'Q') {
+                    result = true;
+                } else {
+                    result = currentList.get((line * settings.getSquareBoardSize() + column) + 1).getLetter() == letters[index];
+                }
+            } else if (letters[index - 1] == 'Q') {
+                result = false;
+            }
 
             if (result) {
                 finalResult = doRightCheck(letters, line, column + 1, ++index);
@@ -354,7 +408,17 @@ public class PlayWordGameActivity extends AppCompatActivity implements Screen {
                 return true;
             }
 
-            boolean result = currentList.get((line * settings.getSquareBoardSize() + column) - 1).getLetter() == letters[index];
+            boolean result = true;
+
+            if (letters[index] == 'U') {
+                if (letters[index - 1] == 'Q') {
+                    result = true;
+                } else {
+                    result = currentList.get((line * settings.getSquareBoardSize() + column) - 1).getLetter() == letters[index];
+                }
+            } else if (letters[index - 1] == 'Q') {
+                result = false;
+            }
 
             if (result) {
                 finalResult = doLeftCheck(letters, line, column - 1, ++index);
@@ -377,7 +441,17 @@ public class PlayWordGameActivity extends AppCompatActivity implements Screen {
                 return true;
             }
 
-            boolean result = currentList.get((line - 1) * settings.getSquareBoardSize() + column).getLetter() == letters[index];
+            boolean result = true;
+
+            if (letters[index] == 'U') {
+                if (letters[index - 1] == 'Q') {
+                    result = true;
+                } else {
+                    result = currentList.get((line - 1) * settings.getSquareBoardSize() + column).getLetter() == letters[index];
+                }
+            } else if (letters[index - 1] == 'Q') {
+                result = false;
+            }
 
             if (result) {
                 finalResult = doTopCheck(letters, line - 1, column, ++index);
@@ -400,7 +474,17 @@ public class PlayWordGameActivity extends AppCompatActivity implements Screen {
                 return true;
             }
 
-            boolean result = currentList.get((line + 1) * settings.getSquareBoardSize() + column).getLetter() == letters[index];
+            boolean result = true;
+
+            if (letters[index] == 'U') {
+                if (letters[index - 1] == 'Q') {
+                    result = true;
+                } else {
+                    result = currentList.get((line + 1) * settings.getSquareBoardSize() + column).getLetter() == letters[index];
+                }
+            } else if (letters[index - 1] == 'Q') {
+                result = false;
+            }
 
             if (result) {
                 finalResult = doBottomCheck(letters, line + 1, column, ++index);
@@ -424,7 +508,17 @@ public class PlayWordGameActivity extends AppCompatActivity implements Screen {
                 return true;
             }
 
-            boolean result = currentList.get(((line - 1) * settings.getSquareBoardSize() + column) + 1).getLetter() == letters[index];
+            boolean result = true;
+
+            if (letters[index] == 'U') {
+                if (letters[index - 1] == 'Q') {
+                    result = true;
+                } else {
+                    result = currentList.get(((line - 1) * settings.getSquareBoardSize() + column) + 1).getLetter() == letters[index];
+                }
+            } else if (letters[index - 1] == 'Q') {
+                result = false;
+            }
 
             if (result) {
                 finalResult = doTopRightCheck(letters, line - 1, column + 1, ++index);
@@ -448,7 +542,17 @@ public class PlayWordGameActivity extends AppCompatActivity implements Screen {
                 return true;
             }
 
-            boolean result = currentList.get(((line - 1) * settings.getSquareBoardSize() + column) - 1).getLetter() == letters[index];
+            boolean result = true;
+
+            if (letters[index] == 'U') {
+                if (letters[index - 1] == 'Q') {
+                    result = true;
+                } else {
+                    result = currentList.get(((line - 1) * settings.getSquareBoardSize() + column) - 1).getLetter() == letters[index];
+                }
+            } else if (letters[index - 1] == 'Q') {
+                result = false;
+            }
 
             if (result) {
                 finalResult = doTopLeftCheck(letters, line - 1, column - 1, ++index);
@@ -472,7 +576,17 @@ public class PlayWordGameActivity extends AppCompatActivity implements Screen {
                 return true;
             }
 
-            boolean result = currentList.get(((line + 1) * settings.getSquareBoardSize() + column) + 1).getLetter() == letters[index];
+            boolean result = true;
+
+            if (letters[index] == 'U') {
+                if (letters[index - 1] == 'Q') {
+                    result = true;
+                } else {
+                    result = currentList.get(((line + 1) * settings.getSquareBoardSize() + column) + 1).getLetter() == letters[index];
+                }
+            } else if (letters[index - 1] == 'Q') {
+                result = false;
+            }
 
             if (result) {
                 finalResult = doBottomRightCheck(letters, line + 1, column + 1, ++index);
@@ -496,7 +610,17 @@ public class PlayWordGameActivity extends AppCompatActivity implements Screen {
                 return true;
             }
 
-            boolean result = currentList.get(((line + 1) * settings.getSquareBoardSize() + column) - 1).getLetter() == letters[index];
+            boolean result = true;
+
+            if (letters[index] == 'U') {
+                if (letters[index - 1] == 'Q') {
+                    result = true;
+                } else {
+                    result = currentList.get(((line + 1) * settings.getSquareBoardSize() + column) - 1).getLetter() == letters[index];
+                }
+            } else if (letters[index - 1] == 'Q') {
+                result = false;
+            }
 
             if (result) {
                 finalResult = doBottomLeftCheck(letters, line + 1, column - 1 , ++index);

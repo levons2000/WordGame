@@ -5,6 +5,8 @@ public class Player {
     private int currentScore;
     private int numberOfGames;
     private int score;
+    private int[] topScores = new int[5];
+    private int[] topWordScores = new int[5];
 
     public Player(final String playerName) {
         this.playerName = playerName;
@@ -50,5 +52,41 @@ public class Player {
 
     public void setScore(int score) {
         this.score = score;
+    }
+
+    public int[] getTopScores() {
+        return topScores;
+    }
+
+    public void setTopScores(int topScore) {
+        int value = topScore;
+        for (int i = 0; i < topScores.length; i++) {
+            if (value == topScores[i]) {
+                return;
+            } else if (value > topScores[i]) {
+                int currentItem = topScores[i];
+                topScores[i] = value;
+                value = currentItem;
+            }
+        }
+    }
+
+    public int[] getTopWordScores() {
+        return topWordScores;
+    }
+
+    public void setTopWordScores(int topWordScore) {
+
+        int value = topWordScore;
+
+        for (int i = 0; i < topWordScores.length; i++) {
+            if (value == topWordScores[i]) {
+                return;
+            } else if (value > topWordScores[i]) {
+                int currentItem = topWordScores[i];
+                topWordScores[i] = value;
+                value = currentItem;
+            }
+        }
     }
 }
