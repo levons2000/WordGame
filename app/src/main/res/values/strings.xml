@@ -8,4 +8,7 @@
     <string name="score">Score</string>
     <string name="start_score_text">0</string>
     <string name="write_the_word">Write the word</string>
+    <string name="letter">Letter</string>
+    <string name="weight">Weight</string>
+    <string name="set_weight">Set Weight</string>
 </resources>

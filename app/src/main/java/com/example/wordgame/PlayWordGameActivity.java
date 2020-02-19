@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -21,7 +20,9 @@ import com.example.wordgame.models.Settings;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -100,10 +101,67 @@ public class PlayWordGameActivity extends AppCompatActivity implements Screen {
         if (intent.getExtras() != null) {
             int minutesToEnd = getIntent().getExtras().getInt("minutesToEnd");
             int squareBoardSize = getIntent().getExtras().getInt("squareBoardSize");
-            int weightOfLetters = getIntent().getExtras().getInt("weightOfLetters");
-            settings = new Settings(minutesToEnd, squareBoardSize, weightOfLetters);
+            Map<String, Integer> weightMap = new HashMap<>();
+            initWeightMap(weightMap, intent);
+            settings = new Settings(minutesToEnd, squareBoardSize, weightMap);
         } else {
             settings = new Settings();
+        }
+    }
+
+    private void initWeightMap(Map<String, Integer> weightsOfLetters, Intent intent) {
+        if (intent.getExtras() != null) {
+            weightsOfLetters.put("A", intent.getExtras().getInt("A"));
+            weightsOfLetters.put("E", intent.getExtras().getInt("E"));
+            weightsOfLetters.put("I", intent.getExtras().getInt("I"));
+            weightsOfLetters.put("O", intent.getExtras().getInt("O"));
+            weightsOfLetters.put("U", intent.getExtras().getInt("U"));
+            weightsOfLetters.put("B", intent.getExtras().getInt("B"));
+            weightsOfLetters.put("C", intent.getExtras().getInt("C"));
+            weightsOfLetters.put("D", intent.getExtras().getInt("D"));
+            weightsOfLetters.put("F", intent.getExtras().getInt("F"));
+            weightsOfLetters.put("G", intent.getExtras().getInt("G"));
+            weightsOfLetters.put("H", intent.getExtras().getInt("H"));
+            weightsOfLetters.put("K", intent.getExtras().getInt("K"));
+            weightsOfLetters.put("L", intent.getExtras().getInt("L"));
+            weightsOfLetters.put("M", intent.getExtras().getInt("M"));
+            weightsOfLetters.put("N", intent.getExtras().getInt("N"));
+            weightsOfLetters.put("P", intent.getExtras().getInt("P"));
+            weightsOfLetters.put("Q", intent.getExtras().getInt("Q"));
+            weightsOfLetters.put("R", intent.getExtras().getInt("R"));
+            weightsOfLetters.put("S", intent.getExtras().getInt("S"));
+            weightsOfLetters.put("T", intent.getExtras().getInt("T"));
+            weightsOfLetters.put("V", intent.getExtras().getInt("V"));
+            weightsOfLetters.put("W", intent.getExtras().getInt("W"));
+            weightsOfLetters.put("X", intent.getExtras().getInt("X"));
+            weightsOfLetters.put("Y", intent.getExtras().getInt("Y"));
+            weightsOfLetters.put("Z", intent.getExtras().getInt("Z"));
+        } else {
+            weightsOfLetters.put("A", 1);
+            weightsOfLetters.put("E", 1);
+            weightsOfLetters.put("I", 1);
+            weightsOfLetters.put("O", 1);
+            weightsOfLetters.put("U", 1);
+            weightsOfLetters.put("B", 1);
+            weightsOfLetters.put("C", 1);
+            weightsOfLetters.put("D", 1);
+            weightsOfLetters.put("F", 1);
+            weightsOfLetters.put("G", 1);
+            weightsOfLetters.put("H", 1);
+            weightsOfLetters.put("K", 1);
+            weightsOfLetters.put("L", 1);
+            weightsOfLetters.put("M", 1);
+            weightsOfLetters.put("N", 1);
+            weightsOfLetters.put("P", 1);
+            weightsOfLetters.put("Q", 1);
+            weightsOfLetters.put("R", 1);
+            weightsOfLetters.put("S", 1);
+            weightsOfLetters.put("T", 1);
+            weightsOfLetters.put("V", 1);
+            weightsOfLetters.put("W", 1);
+            weightsOfLetters.put("X", 1);
+            weightsOfLetters.put("Y", 1);
+            weightsOfLetters.put("Z", 1);
         }
     }
 
@@ -191,6 +249,31 @@ public class PlayWordGameActivity extends AppCompatActivity implements Screen {
         pref.edit().putInt("currentScore", currentPlayer.getCurrentScore()).apply();
         pref.edit().putInt("numberOfGames", currentPlayer.getNumberOfGames()).apply();
         pref.edit().putInt("score", currentPlayer.getScore()).apply();
+        pref.edit().putInt("A", settings.getWeightsOfLetters().get("A")).apply();
+        pref.edit().putInt("E", settings.getWeightsOfLetters().get("E")).apply();
+        pref.edit().putInt("I", settings.getWeightsOfLetters().get("I")).apply();
+        pref.edit().putInt("O", settings.getWeightsOfLetters().get("O")).apply();
+        pref.edit().putInt("U", settings.getWeightsOfLetters().get("U")).apply();
+        pref.edit().putInt("B", settings.getWeightsOfLetters().get("B")).apply();
+        pref.edit().putInt("C", settings.getWeightsOfLetters().get("C")).apply();
+        pref.edit().putInt("D", settings.getWeightsOfLetters().get("D")).apply();
+        pref.edit().putInt("F", settings.getWeightsOfLetters().get("F")).apply();
+        pref.edit().putInt("G", settings.getWeightsOfLetters().get("G")).apply();
+        pref.edit().putInt("H", settings.getWeightsOfLetters().get("H")).apply();
+        pref.edit().putInt("K", settings.getWeightsOfLetters().get("K")).apply();
+        pref.edit().putInt("L", settings.getWeightsOfLetters().get("L")).apply();
+        pref.edit().putInt("M", settings.getWeightsOfLetters().get("M")).apply();
+        pref.edit().putInt("N", settings.getWeightsOfLetters().get("N")).apply();
+        pref.edit().putInt("P", settings.getWeightsOfLetters().get("P")).apply();
+        pref.edit().putInt("Q", settings.getWeightsOfLetters().get("Q")).apply();
+        pref.edit().putInt("R", settings.getWeightsOfLetters().get("R")).apply();
+        pref.edit().putInt("S", settings.getWeightsOfLetters().get("S")).apply();
+        pref.edit().putInt("T", settings.getWeightsOfLetters().get("T")).apply();
+        pref.edit().putInt("V", settings.getWeightsOfLetters().get("V")).apply();
+        pref.edit().putInt("W", settings.getWeightsOfLetters().get("W")).apply();
+        pref.edit().putInt("X", settings.getWeightsOfLetters().get("X")).apply();
+        pref.edit().putInt("Y", settings.getWeightsOfLetters().get("Y")).apply();
+        pref.edit().putInt("Z", settings.getWeightsOfLetters().get("Z")).apply();
     }
 
     @Override
@@ -214,7 +297,11 @@ public class PlayWordGameActivity extends AppCompatActivity implements Screen {
             for (int j = 0; j < (int) Math.sqrt(currentList.size()); ++j) {
                 if (currentList.get(i * settings.getSquareBoardSize() + j).getLetter() == characters[0]) {
                     if (doCharacterMatching(characters, i, j)) {
-                        currentPlayer.setCurrentScore(currentPlayer.getCurrentScore() + 1);
+                        int point = 0;
+                        for (char character : characters) {
+                            point = point + settings.getWeightsOfLetters().get(String.valueOf(character));
+                        }
+                        currentPlayer.setCurrentScore(currentPlayer.getCurrentScore() + point);
                         scoreText.setText(String.valueOf(currentPlayer.getCurrentScore()));
                         return;
                     }

@@ -5,12 +5,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.SeekBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.wordgame.interfaces.Screen;
 import com.example.wordgame.models.Player;
 import com.example.wordgame.models.Settings;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class SettingsActivity extends AppCompatActivity implements Screen, SeekBar.OnSeekBarChangeListener {
 
@@ -19,7 +25,11 @@ public class SettingsActivity extends AppCompatActivity implements Screen, SeekB
 
     private TextView minutesToEndText;
     private TextView squareBoardSizeText;
-    private TextView weightOfLettersText;
+
+    private Spinner letterSpinner;
+    private Spinner weightSpinner;
+
+    private Button setWeightButton;
 
 
     @Override
@@ -44,7 +54,31 @@ public class SettingsActivity extends AppCompatActivity implements Screen, SeekB
         Intent resultIntent = new Intent();
         resultIntent.putExtra("minutesToEnd", settings.getMinutesToEnd());
         resultIntent.putExtra("squareBoardSize", settings.getSquareBoardSize());
-        resultIntent.putExtra("weightOfLetters", settings.getWeightOfLetters());
+        resultIntent.putExtra("A", settings.getWeightsOfLetters().get("A"));
+        resultIntent.putExtra("E", settings.getWeightsOfLetters().get("E"));
+        resultIntent.putExtra("I", settings.getWeightsOfLetters().get("I"));
+        resultIntent.putExtra("O", settings.getWeightsOfLetters().get("O"));
+        resultIntent.putExtra("U", settings.getWeightsOfLetters().get("U"));
+        resultIntent.putExtra("B", settings.getWeightsOfLetters().get("B"));
+        resultIntent.putExtra("C", settings.getWeightsOfLetters().get("C"));
+        resultIntent.putExtra("D", settings.getWeightsOfLetters().get("D"));
+        resultIntent.putExtra("F", settings.getWeightsOfLetters().get("F"));
+        resultIntent.putExtra("G", settings.getWeightsOfLetters().get("G"));
+        resultIntent.putExtra("H", settings.getWeightsOfLetters().get("H"));
+        resultIntent.putExtra("K", settings.getWeightsOfLetters().get("K"));
+        resultIntent.putExtra("L", settings.getWeightsOfLetters().get("L"));
+        resultIntent.putExtra("M", settings.getWeightsOfLetters().get("M"));
+        resultIntent.putExtra("N", settings.getWeightsOfLetters().get("N"));
+        resultIntent.putExtra("P", settings.getWeightsOfLetters().get("P"));
+        resultIntent.putExtra("Q", settings.getWeightsOfLetters().get("Q"));
+        resultIntent.putExtra("R", settings.getWeightsOfLetters().get("R"));
+        resultIntent.putExtra("S", settings.getWeightsOfLetters().get("S"));
+        resultIntent.putExtra("T", settings.getWeightsOfLetters().get("T"));
+        resultIntent.putExtra("V", settings.getWeightsOfLetters().get("V"));
+        resultIntent.putExtra("W", settings.getWeightsOfLetters().get("W"));
+        resultIntent.putExtra("X", settings.getWeightsOfLetters().get("X"));
+        resultIntent.putExtra("Y", settings.getWeightsOfLetters().get("Y"));
+        resultIntent.putExtra("Z", settings.getWeightsOfLetters().get("Z"));
         setResult(RESULT_OK, resultIntent);
         super.onBackPressed();
     }
@@ -56,6 +90,31 @@ public class SettingsActivity extends AppCompatActivity implements Screen, SeekB
         pref.edit().putInt("currentScore", currentPlayer.getCurrentScore()).apply();
         pref.edit().putInt("numberOfGames", currentPlayer.getNumberOfGames()).apply();
         pref.edit().putInt("score", currentPlayer.getScore()).apply();
+        pref.edit().putInt("A", settings.getWeightsOfLetters().get("A")).apply();
+        pref.edit().putInt("E", settings.getWeightsOfLetters().get("E")).apply();
+        pref.edit().putInt("I", settings.getWeightsOfLetters().get("I")).apply();
+        pref.edit().putInt("O", settings.getWeightsOfLetters().get("O")).apply();
+        pref.edit().putInt("U", settings.getWeightsOfLetters().get("U")).apply();
+        pref.edit().putInt("B", settings.getWeightsOfLetters().get("B")).apply();
+        pref.edit().putInt("C", settings.getWeightsOfLetters().get("C")).apply();
+        pref.edit().putInt("D", settings.getWeightsOfLetters().get("D")).apply();
+        pref.edit().putInt("F", settings.getWeightsOfLetters().get("F")).apply();
+        pref.edit().putInt("G", settings.getWeightsOfLetters().get("G")).apply();
+        pref.edit().putInt("H", settings.getWeightsOfLetters().get("H")).apply();
+        pref.edit().putInt("K", settings.getWeightsOfLetters().get("K")).apply();
+        pref.edit().putInt("L", settings.getWeightsOfLetters().get("L")).apply();
+        pref.edit().putInt("M", settings.getWeightsOfLetters().get("M")).apply();
+        pref.edit().putInt("N", settings.getWeightsOfLetters().get("N")).apply();
+        pref.edit().putInt("P", settings.getWeightsOfLetters().get("P")).apply();
+        pref.edit().putInt("Q", settings.getWeightsOfLetters().get("Q")).apply();
+        pref.edit().putInt("R", settings.getWeightsOfLetters().get("R")).apply();
+        pref.edit().putInt("S", settings.getWeightsOfLetters().get("S")).apply();
+        pref.edit().putInt("T", settings.getWeightsOfLetters().get("T")).apply();
+        pref.edit().putInt("V", settings.getWeightsOfLetters().get("V")).apply();
+        pref.edit().putInt("W", settings.getWeightsOfLetters().get("W")).apply();
+        pref.edit().putInt("X", settings.getWeightsOfLetters().get("X")).apply();
+        pref.edit().putInt("Y", settings.getWeightsOfLetters().get("Y")).apply();
+        pref.edit().putInt("Z", settings.getWeightsOfLetters().get("Z")).apply();
     }
 
     @Override
@@ -81,20 +140,42 @@ public class SettingsActivity extends AppCompatActivity implements Screen, SeekB
         squareBoardSizeSeekBar.setProgress(settings.getSquareBoardSize() - 4);
         squareBoardSizeText.setText(settings.getSquareBoardSize() + " X " + settings.getSquareBoardSize());
         squareBoardSizeSeekBar.setOnSeekBarChangeListener(this);
-        weightOfLettersText = findViewById(R.id.weight_of_letters_text);
-        SeekBar weightOfLettersSeekBar = findViewById(R.id.weight_of_letters_seek_bar);
-        weightOfLettersSeekBar.setProgress(settings.getWeightOfLetters() - 1);
-        weightOfLettersText.setText(String.valueOf(settings.getWeightOfLetters()));
-        weightOfLettersSeekBar.setOnSeekBarChangeListener(this);
-        weightOfLettersSeekBar.setMax(4);
+
+        letterSpinner = findViewById(R.id.letter_spinner);
+        weightSpinner = findViewById(R.id.weight_spinner);
+
+        String[] letterArray = new String[] {
+                "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M",
+                "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "z"
+        };
+
+        ArrayAdapter<String> letterSpinnerAdapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_item, letterArray);
+        letterSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        letterSpinner.setAdapter(letterSpinnerAdapter);
+
+        String[] weightArray = new String[] {
+                "1", "2", "3", "4", "5"
+        };
+
+        ArrayAdapter<String> weightSpinnerAdapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_item, weightArray);
+        weightSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        weightSpinner.setAdapter(weightSpinnerAdapter);
+
+        setWeightButton = findViewById(R.id.set_weight_button);
+        setWeightButton.setOnClickListener(view ->
+                settings.getWeightsOfLetters().put(letterSpinner.getSelectedItem().toString(), Integer.valueOf(weightSpinner.getSelectedItem().toString()))
+        );
     }
 
     private void initSettings(Intent intent) {
         if (intent.getExtras() != null) {
             int minutesToEnd = getIntent().getExtras().getInt("minutesToEnd");
             int squareBoardSize = getIntent().getExtras().getInt("squareBoardSize");
-            int weightOfLetters = getIntent().getExtras().getInt("weightOfLetters");
-            settings = new Settings(minutesToEnd, squareBoardSize, weightOfLetters);
+            Map<String, Integer> weightMap = new HashMap<>();
+            initWeightMap(weightMap, intent);
+            settings = new Settings(minutesToEnd, squareBoardSize, weightMap);
         } else {
             settings = new Settings();
         }
@@ -111,6 +192,62 @@ public class SettingsActivity extends AppCompatActivity implements Screen, SeekB
         }
     }
 
+    private void initWeightMap(Map<String, Integer> weightsOfLetters, Intent intent) {
+        if (intent.getExtras() != null) {
+            weightsOfLetters.put("A", intent.getExtras().getInt("A"));
+            weightsOfLetters.put("E", intent.getExtras().getInt("E"));
+            weightsOfLetters.put("I", intent.getExtras().getInt("I"));
+            weightsOfLetters.put("O", intent.getExtras().getInt("O"));
+            weightsOfLetters.put("U", intent.getExtras().getInt("U"));
+            weightsOfLetters.put("B", intent.getExtras().getInt("B"));
+            weightsOfLetters.put("C", intent.getExtras().getInt("C"));
+            weightsOfLetters.put("D", intent.getExtras().getInt("D"));
+            weightsOfLetters.put("F", intent.getExtras().getInt("F"));
+            weightsOfLetters.put("G", intent.getExtras().getInt("G"));
+            weightsOfLetters.put("H", intent.getExtras().getInt("H"));
+            weightsOfLetters.put("K", intent.getExtras().getInt("K"));
+            weightsOfLetters.put("L", intent.getExtras().getInt("L"));
+            weightsOfLetters.put("M", intent.getExtras().getInt("M"));
+            weightsOfLetters.put("N", intent.getExtras().getInt("N"));
+            weightsOfLetters.put("P", intent.getExtras().getInt("P"));
+            weightsOfLetters.put("Q", intent.getExtras().getInt("Q"));
+            weightsOfLetters.put("R", intent.getExtras().getInt("R"));
+            weightsOfLetters.put("S", intent.getExtras().getInt("S"));
+            weightsOfLetters.put("T", intent.getExtras().getInt("T"));
+            weightsOfLetters.put("V", intent.getExtras().getInt("V"));
+            weightsOfLetters.put("W", intent.getExtras().getInt("W"));
+            weightsOfLetters.put("X", intent.getExtras().getInt("X"));
+            weightsOfLetters.put("Y", intent.getExtras().getInt("Y"));
+            weightsOfLetters.put("Z", intent.getExtras().getInt("Z"));
+        } else {
+            weightsOfLetters.put("A", 1);
+            weightsOfLetters.put("E", 1);
+            weightsOfLetters.put("I", 1);
+            weightsOfLetters.put("O", 1);
+            weightsOfLetters.put("U", 1);
+            weightsOfLetters.put("B", 1);
+            weightsOfLetters.put("C", 1);
+            weightsOfLetters.put("D", 1);
+            weightsOfLetters.put("F", 1);
+            weightsOfLetters.put("G", 1);
+            weightsOfLetters.put("H", 1);
+            weightsOfLetters.put("K", 1);
+            weightsOfLetters.put("L", 1);
+            weightsOfLetters.put("M", 1);
+            weightsOfLetters.put("N", 1);
+            weightsOfLetters.put("P", 1);
+            weightsOfLetters.put("Q", 1);
+            weightsOfLetters.put("R", 1);
+            weightsOfLetters.put("S", 1);
+            weightsOfLetters.put("T", 1);
+            weightsOfLetters.put("V", 1);
+            weightsOfLetters.put("W", 1);
+            weightsOfLetters.put("X", 1);
+            weightsOfLetters.put("Y", 1);
+            weightsOfLetters.put("Z", 1);
+        }
+    }
+
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
         switch (seekBar.getId()) {
@@ -121,10 +258,6 @@ public class SettingsActivity extends AppCompatActivity implements Screen, SeekB
             case R.id.square_board_size_seek_bar:
                 squareBoardSizeText.setText((progress + 4) + " X "  + (progress + 4));
                 settings.setSquareBoardSize(progress + 4);
-                break;
-            case R.id.weight_of_letters_seek_bar:
-                weightOfLettersText.setText(String.valueOf(progress + 1));
-                settings.setWeightOfLetters(progress + 1);
                 break;
         }
     }
