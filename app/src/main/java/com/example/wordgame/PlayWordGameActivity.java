@@ -119,7 +119,7 @@ public class PlayWordGameActivity extends AppCompatActivity implements Screen {
         if (intent.getExtras() != null && intent.getExtras().getString("playerName") != null) {
             currentPlayer = new Player(
                     intent.getExtras().getString("playerName"),
-                    intent.getExtras().getInt("currentScore"),
+                    0,
                     intent.getExtras().getInt("numberOfGames"),
                     intent.getExtras().getInt("score")
             );
