@@ -21,9 +21,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -62,6 +64,7 @@ public class PlayWordGameActivity extends AppCompatActivity implements Screen {
             new LetterModel('Z')
     );
     private List<LetterModel> currentList;
+    private Set<String> usedWords = new HashSet<>();
 
     private EditText wordInput;
     private TextView timerText;
@@ -84,6 +87,7 @@ public class PlayWordGameActivity extends AppCompatActivity implements Screen {
     protected void onDestroy() {
         super.onDestroy();
         save();
+        exit();
     }
 
     @Override
@@ -307,7 +311,7 @@ public class PlayWordGameActivity extends AppCompatActivity implements Screen {
 
     @Override
     public void exit() {
-
+        usedWords.clear();
     }
 
     @Override
@@ -340,13 +344,16 @@ public class PlayWordGameActivity extends AppCompatActivity implements Screen {
             for (int j = 0; j < (int) Math.sqrt(currentList.size()); ++j) {
                 if (currentList.get(i * settings.getSquareBoardSize() + j).getLetter() == characters[0]) {
                     if (doCharacterMatching(characters, i, j)) {
-                        int point = 0;
-                        for (char character : characters) {
-                            point = point + settings.getWeightsOfLetters().get(String.valueOf(character));
+                        if (!usedWords.contains(String.valueOf(characters))) {
+                            int point = 0;
+                            usedWords.add(String.valueOf(characters));
+                            for (char character : characters) {
+                                point = point + settings.getWeightsOfLetters().get(String.valueOf(character));
+                            }
+                            currentPlayer.setCurrentScore(currentPlayer.getCurrentScore() + point);
+                            scoreText.setText(String.valueOf(currentPlayer.getCurrentScore()));
+                            currentPlayer.setTopWordScores(point);
                         }
-                        currentPlayer.setCurrentScore(currentPlayer.getCurrentScore() + point);
-                        scoreText.setText(String.valueOf(currentPlayer.getCurrentScore()));
-                        currentPlayer.setTopWordScores(point);
                         return;
                     }
                 }
