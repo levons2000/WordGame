@@ -256,13 +256,16 @@ public class PlayWordGameActivity extends AppCompatActivity implements Screen {
         wordInput.setEnabled(true);
         refreshButton.setEnabled(true);
         enterButton.setEnabled(true);
+        timerText.setText(String.format("Number Of Minutes: %d", settings.getMinutesToEnd()));
         timer.scheduleAtFixedRate(new TimerTask() {
             int count = settings.getMinutesToEnd() * 60;
 
             @Override
             public void run() {
                 runOnUiThread(() -> {
-                    timerText.setText(String.format("Time Remaining: %d", count));
+                    if (count % 60 == 0) {
+                        timerText.setText(String.format("Number Of Minutes: %d", count / 60));
+                    }
                     if (count == 0) {
                         wordInput.setEnabled(false);
                         refreshButton.setEnabled(false);
