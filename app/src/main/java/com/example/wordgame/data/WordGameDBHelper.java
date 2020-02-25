@@ -124,7 +124,7 @@ public class WordGameDBHelper extends SQLiteOpenHelper {
 
     public List<Game> getGames() {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM " + GameTableEntry.TABLE_NAME,
+        Cursor cursor = db.rawQuery("SELECT * FROM " + GameTableEntry.TABLE_NAME + " ORDER BY " + GameTableEntry.COLUMN_NAME_SCORE + " DESC",
                 null);
 
         List<Game> games = new ArrayList<>();

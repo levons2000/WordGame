@@ -396,7 +396,7 @@ public class PlayWordGameActivity extends AppCompatActivity implements Screen {
                 return true;
             }
 
-            boolean result = true;
+            boolean result;
 
             if (letters[index] == 'U') {
                 if (letters[index - 1] == 'Q') {
@@ -406,12 +406,14 @@ public class PlayWordGameActivity extends AppCompatActivity implements Screen {
                 }
             } else if (letters[index - 1] == 'Q') {
                 result = false;
+            } else {
+                result = currentList.get((line * settings.getSquareBoardSize() + column) + 1).getLetter() == letters[index];
             }
 
             if (result) {
                 finalResult = doRightCheck(letters, line, column + 1, ++index);
             } else {
-                return false;
+                finalResult = doRightCheck(letters, line, column + 1, index);
             }
 
         } else {
@@ -440,12 +442,14 @@ public class PlayWordGameActivity extends AppCompatActivity implements Screen {
                 }
             } else if (letters[index - 1] == 'Q') {
                 result = false;
+            } else {
+                result = currentList.get((line * settings.getSquareBoardSize() + column) - 1).getLetter() == letters[index];
             }
 
             if (result) {
                 finalResult = doLeftCheck(letters, line, column - 1, ++index);
             } else {
-                return false;
+                finalResult = doLeftCheck(letters, line, column - 1, index);
             }
 
         } else {
@@ -473,12 +477,14 @@ public class PlayWordGameActivity extends AppCompatActivity implements Screen {
                 }
             } else if (letters[index - 1] == 'Q') {
                 result = false;
+            } else {
+                result = currentList.get((line - 1) * settings.getSquareBoardSize() + column).getLetter() == letters[index];
             }
 
             if (result) {
                 finalResult = doTopCheck(letters, line - 1, column, ++index);
             } else {
-                return false;
+                finalResult = doTopCheck(letters, line - 1, column, index);
             }
 
         } else {
@@ -506,12 +512,14 @@ public class PlayWordGameActivity extends AppCompatActivity implements Screen {
                 }
             } else if (letters[index - 1] == 'Q') {
                 result = false;
+            } else {
+                result = currentList.get((line + 1) * settings.getSquareBoardSize() + column).getLetter() == letters[index];
             }
 
             if (result) {
                 finalResult = doBottomCheck(letters, line + 1, column, ++index);
             } else {
-                return false;
+                finalResult = doBottomCheck(letters, line + 1, column, index);
             }
 
         } else {
@@ -540,12 +548,14 @@ public class PlayWordGameActivity extends AppCompatActivity implements Screen {
                 }
             } else if (letters[index - 1] == 'Q') {
                 result = false;
+            } else {
+                result = currentList.get(((line - 1) * settings.getSquareBoardSize() + column) + 1).getLetter() == letters[index];
             }
 
             if (result) {
                 finalResult = doTopRightCheck(letters, line - 1, column + 1, ++index);
             } else {
-                return false;
+                finalResult = doTopRightCheck(letters, line - 1, column + 1, index);
             }
 
         } else {
@@ -574,12 +584,14 @@ public class PlayWordGameActivity extends AppCompatActivity implements Screen {
                 }
             } else if (letters[index - 1] == 'Q') {
                 result = false;
+            } else {
+                result = currentList.get(((line - 1) * settings.getSquareBoardSize() + column) - 1).getLetter() == letters[index];
             }
 
             if (result) {
                 finalResult = doTopLeftCheck(letters, line - 1, column - 1, ++index);
             } else {
-                return false;
+                finalResult = doTopLeftCheck(letters, line - 1, column - 1, index);
             }
 
         } else {
@@ -608,12 +620,14 @@ public class PlayWordGameActivity extends AppCompatActivity implements Screen {
                 }
             } else if (letters[index - 1] == 'Q') {
                 result = false;
+            } else {
+                result = currentList.get(((line + 1) * settings.getSquareBoardSize() + column) + 1).getLetter() == letters[index];
             }
 
             if (result) {
                 finalResult = doBottomRightCheck(letters, line + 1, column + 1, ++index);
             } else {
-                return false;
+                finalResult = doBottomRightCheck(letters, line + 1, column + 1, index);
             }
 
         } else {
@@ -642,12 +656,14 @@ public class PlayWordGameActivity extends AppCompatActivity implements Screen {
                 }
             } else if (letters[index - 1] == 'Q') {
                 result = false;
+            } else {
+                result = currentList.get(((line + 1) * settings.getSquareBoardSize() + column) - 1).getLetter() == letters[index];
             }
 
             if (result) {
                 finalResult = doBottomLeftCheck(letters, line + 1, column - 1 , ++index);
             } else {
-                return false;
+                finalResult = doBottomLeftCheck(letters, line + 1, column - 1 , index);
             }
 
         } else {
