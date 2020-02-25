@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.wordgame.interfaces.Screen;
 import com.example.wordgame.models.Player;
@@ -164,9 +165,11 @@ public class SettingsActivity extends AppCompatActivity implements Screen, SeekB
         weightSpinner.setAdapter(weightSpinnerAdapter);
 
         setWeightButton = findViewById(R.id.set_weight_button);
-        setWeightButton.setOnClickListener(view ->
-                settings.getWeightsOfLetters().put(letterSpinner.getSelectedItem().toString(), Integer.valueOf(weightSpinner.getSelectedItem().toString()))
-        );
+        setWeightButton.setOnClickListener(view -> {
+            settings.getWeightsOfLetters().put(letterSpinner.getSelectedItem().toString(), Integer.valueOf(weightSpinner.getSelectedItem().toString()));
+            Toast.makeText(this, "Weight of " + letterSpinner.getSelectedItem().toString() +
+                    " now is " + Integer.valueOf(weightSpinner.getSelectedItem().toString()), Toast.LENGTH_SHORT).show();
+        });
     }
 
     private void initSettings(Intent intent) {
