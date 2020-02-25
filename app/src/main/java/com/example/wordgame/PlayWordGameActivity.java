@@ -12,6 +12,7 @@ import android.text.InputType;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.wordgame.adapters.LetterAdapter;
 import com.example.wordgame.data.DataUtil;
@@ -346,14 +347,18 @@ public class PlayWordGameActivity extends AppCompatActivity implements Screen {
                 if (characters[i] == 'Q') {
                     if(i != characters.length - 1) {
                         if (characters[i + 1] != 'U') {
+                            Toast.makeText(this, "Wrong word", Toast.LENGTH_SHORT).show();
                             return;
                         }
                     } else {
+                        Toast.makeText(this, "Wrong word", Toast.LENGTH_SHORT).show();
                         return;
                     }
                 }
             }
         }
+
+        boolean isWordWrong = false;
 
         for (int i = 0; i < (int) Math.sqrt(currentList.size()); ++i) {
             for (int j = 0; j < (int) Math.sqrt(currentList.size()); ++j) {
@@ -368,11 +373,21 @@ public class PlayWordGameActivity extends AppCompatActivity implements Screen {
                             currentPlayer.setCurrentScore(currentPlayer.getCurrentScore() + point);
                             scoreText.setText(String.valueOf(currentPlayer.getCurrentScore()));
                             currentPlayer.setTopWordScores(point);
+                        } else {
+                            Toast.makeText(this, "Word have been already used", Toast.LENGTH_SHORT).show();
                         }
                         return;
+                    } else {
+                        isWordWrong = true;
                     }
+                } else {
+                    isWordWrong = true;
                 }
             }
+        }
+
+        if (isWordWrong) {
+            Toast.makeText(this, "Wrong word", Toast.LENGTH_SHORT).show();
         }
     }
 
