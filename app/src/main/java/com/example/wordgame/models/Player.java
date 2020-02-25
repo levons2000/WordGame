@@ -89,4 +89,10 @@ public class Player {
             }
         }
     }
+
+    public void setTopWordScoresToZero() {
+        for (int i = 0; i < topWordScores.length; i++) {
+            topWordScores[i] = 0;
+        }
+    }
 }

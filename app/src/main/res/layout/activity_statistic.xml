@@ -1,124 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal"
-    android:weightSum="1"
     tools:context=".StatisticActivity">
 
     <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_weight="0.5">
-
-        <TextView
-            android:layout_width="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:orientation="vertical">
+        <Button
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/player_scores"
+            android:text="@string/score_statistic"
+            android:textAllCaps="false"
+            android:textSize="25sp"
+            android:textColor="@color/colorPrimary"
+            android:background="@null"
+            android:id="@+id/score_statistics"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/word_statistic"
+            android:background="@null"
             android:textColor="@color/colorPrimary"
             android:textSize="25sp"
-            android:textStyle="bold"
-            android:textAlignment="center"/>
-
-        <TextView
-            android:id="@+id/top_first"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:textAlignment="center"
-            android:textSize="20sp" />
-
-        <TextView
-            android:id="@+id/top_second"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:textAlignment="center"
-            android:textSize="20sp" />
-
-        <TextView
-            android:id="@+id/top_third"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:layout_marginTop="10dp"
-            android:textSize="20sp" />
-
-        <TextView
-            android:id="@+id/top_fourth"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:layout_marginTop="10dp"
-            android:textSize="20sp" />
-
-        <TextView
-            android:id="@+id/top_fifth"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:layout_marginTop="10dp"
-            android:textSize="20sp" />
-
+            android:textAllCaps="false"
+            android:id="@+id/word_statistics"/>
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_weight="0.5">
+        android:visibility="gone"
+        android:id="@+id/statistic_layout"
+        android:orientation="vertical">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/word_points"
+            android:id="@+id/statistic_title"
+            android:layout_marginTop="15dp"
             android:textColor="@color/colorPrimary"
-            android:textSize="25sp"
-            android:textStyle="bold"
-            android:textAlignment="center"/>
-
-        <TextView
-            android:id="@+id/word_first"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:textSize="30sp"
             android:textAlignment="center"
-            android:textSize="20sp" />
+            android:text="Statistic"/>
 
-        <TextView
-            android:id="@+id/word_second"
+        <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:textAlignment="center"
-            android:textSize="20sp" />
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            android:id="@+id/score_statistic_recycler"/>
 
-        <TextView
-            android:id="@+id/word_third"
+        <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:layout_marginTop="10dp"
-            android:textSize="20sp" />
-
-        <TextView
-            android:id="@+id/word_fourth"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:layout_marginTop="10dp"
-            android:textSize="20sp" />
-
-        <TextView
-            android:id="@+id/word_fifth"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:layout_marginTop="10dp"
-            android:textSize="20sp" />
-
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            android:id="@+id/word_statistic_recycler"/>
     </LinearLayout>
 
-</LinearLayout>
+</RelativeLayout>

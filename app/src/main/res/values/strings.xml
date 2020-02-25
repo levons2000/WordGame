@@ -13,4 +13,11 @@
     <string name="set_weight">Set Weight</string>
     <string name="player_scores">Player Scores</string>
     <string name="word_points">Word Points</string>
+    <string name="score_statistic">Score Statistic</string>
+    <string name="word_statistic">Word Statistic</string>
+    <string name="scoreWithPostfix">Score:</string>
+    <string name="reset_count">Reset Count:</string>
+    <string name="words_entered">Words Entered:</string>
+    <string name="used_in_games">Used In Games:</string>
+    <string name="word">Word:</string>
 </resources>

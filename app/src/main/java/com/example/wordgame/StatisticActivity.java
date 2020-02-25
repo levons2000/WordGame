@@ -1,21 +1,35 @@
 package com.example.wordgame;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.wordgame.adapters.ScoreAdapter;
+import com.example.wordgame.adapters.WordAdapter;
 import com.example.wordgame.models.Player;
 
 public class StatisticActivity extends AppCompatActivity {
 
     private Player currentPlayer;
+    private Button scoreButton;
+    private Button wordButton;
+    private LinearLayout statisticLayout;
+    private TextView statisticTitle;
+    private RecyclerView scoreStatisticRecycler;
+    private RecyclerView wordStatisticRecycler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_statistic);
+        initViews();
         initCurrentPlayer(getIntent());
         initScoreBoard();
         initWordBoard();
@@ -43,29 +57,48 @@ public class StatisticActivity extends AppCompatActivity {
         }
     }
 
+    private void initViews() {
+        scoreButton = findViewById(R.id.score_statistics);
+        wordButton = findViewById(R.id.word_statistics);
+        statisticLayout = findViewById(R.id.statistic_layout);
+        scoreStatisticRecycler = findViewById(R.id.score_statistic_recycler);
+        wordStatisticRecycler = findViewById(R.id.word_statistic_recycler);
+        statisticTitle = findViewById(R.id.statistic_title);
+
+        scoreButton.setOnClickListener(view -> {
+            scoreButton.setVisibility(View.GONE);
+            wordButton.setVisibility(View.GONE);
+            statisticTitle.setText("Score Statistic");
+            statisticLayout.setVisibility(View.VISIBLE);
+            scoreStatisticRecycler.setVisibility(View.VISIBLE);
+        });
+
+        wordButton.setOnClickListener(view -> {
+            scoreButton.setVisibility(View.GONE);
+            wordButton.setVisibility(View.GONE);
+            statisticTitle.setText("Word Statistic");
+            statisticLayout.setVisibility(View.VISIBLE);
+            wordStatisticRecycler.setVisibility(View.VISIBLE);
+        });
+
+        ScoreAdapter scoreAdapter = new ScoreAdapter(this);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
+        scoreStatisticRecycler.setAdapter(scoreAdapter);
+        scoreStatisticRecycler.setLayoutManager(linearLayoutManager);
+        scoreStatisticRecycler.setHasFixedSize(true);
+
+        WordAdapter wordAdapter = new WordAdapter(this);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
+        wordStatisticRecycler.setAdapter(wordAdapter);
+        wordStatisticRecycler.setLayoutManager(layoutManager);
+        wordStatisticRecycler.setHasFixedSize(true);
+    }
+
     private void initScoreBoard() {
-        TextView first = findViewById(R.id.top_first);
-        TextView second = findViewById(R.id.top_second);
-        TextView third = findViewById(R.id.top_third);
-        TextView fourth = findViewById(R.id.top_fourth);
-        TextView fifth = findViewById(R.id.top_fifth);
-        first.setText(String.valueOf(currentPlayer.getTopScores()[0]));
-        second.setText(String.valueOf(currentPlayer.getTopScores()[1]));
-        third.setText(String.valueOf(currentPlayer.getTopScores()[2]));
-        fourth.setText(String.valueOf(currentPlayer.getTopScores()[3]));
-        fifth.setText(String.valueOf(currentPlayer.getTopScores()[4]));
+
     }
 
     private void initWordBoard() {
-        TextView first = findViewById(R.id.word_first);
-        TextView second = findViewById(R.id.word_second);
-        TextView third = findViewById(R.id.word_third);
-        TextView fourth = findViewById(R.id.word_fourth);
-        TextView fifth = findViewById(R.id.word_fifth);
-        first.setText(String.valueOf(currentPlayer.getTopWordScores()[0]));
-        second.setText(String.valueOf(currentPlayer.getTopWordScores()[1]));
-        third.setText(String.valueOf(currentPlayer.getTopWordScores()[2]));
-        fourth.setText(String.valueOf(currentPlayer.getTopWordScores()[3]));
-        fifth.setText(String.valueOf(currentPlayer.getTopWordScores()[4]));
+
     }
 }

@@ -13,6 +13,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.wordgame.data.DataUtil;
+import com.example.wordgame.data.WordGameDBHelper;
 import com.example.wordgame.interfaces.Screen;
 import com.example.wordgame.models.Player;
 import com.example.wordgame.models.Settings;
@@ -38,6 +40,9 @@ public class MainActivity extends AppCompatActivity implements Screen {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        WordGameDBHelper dbHelper = new WordGameDBHelper(this);
+        DataUtil.words.addAll(dbHelper.getWords());
+        DataUtil.games.addAll(dbHelper.getGames());
         SharedPreferences pref = getApplicationContext().getSharedPreferences("SP", 0);
         String savedPlayerName = pref.getString("playerName", null);
         int savedCurrentScore = pref.getInt("currentScore", 0);

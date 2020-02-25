@@ -1,5 +1,6 @@
 package com.example.wordgame;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -7,15 +8,20 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.InputType;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.wordgame.adapters.LetterAdapter;
+import com.example.wordgame.data.DataUtil;
+import com.example.wordgame.data.WordGameDBHelper;
 import com.example.wordgame.interfaces.Screen;
+import com.example.wordgame.models.Game;
 import com.example.wordgame.models.LetterModel;
 import com.example.wordgame.models.Player;
 import com.example.wordgame.models.Settings;
+import com.example.wordgame.models.Word;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -72,6 +78,9 @@ public class PlayWordGameActivity extends AppCompatActivity implements Screen {
     private ImageButton enterButton;
     private ImageButton refreshButton;
 
+    private static final int MAX_RESET_COUNT = 5;
+    private int resetCount = MAX_RESET_COUNT;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,6 +101,8 @@ public class PlayWordGameActivity extends AppCompatActivity implements Screen {
 
     @Override
     public void onBackPressed() {
+        showScoreAlert();
+
         Intent resultIntent = new Intent();
         currentPlayer.setTopScores(Integer.valueOf(scoreText.getText().toString()));
         resultIntent.putExtra("firstScore", currentPlayer.getTopScores()[0]);
@@ -116,7 +127,6 @@ public class PlayWordGameActivity extends AppCompatActivity implements Screen {
         pref.edit().putInt("fourthWord", currentPlayer.getTopWordScores()[3]).apply();
         pref.edit().putInt("fifthWord", currentPlayer.getTopWordScores()[4]).apply();
         setResult(RESULT_OK, resultIntent);
-        super.onBackPressed();
     }
 
     private void initCurrentPlayer(Intent intent) {
@@ -127,6 +137,7 @@ public class PlayWordGameActivity extends AppCompatActivity implements Screen {
                     intent.getExtras().getInt("numberOfGames"),
                     intent.getExtras().getInt("score")
             );
+            currentPlayer.setTopWordScoresToZero();
         }
     }
 
@@ -271,6 +282,7 @@ public class PlayWordGameActivity extends AppCompatActivity implements Screen {
                         refreshButton.setEnabled(false);
                         enterButton.setEnabled(false);
                         timer.cancel();
+                        showScoreAlert();
                     }
                     --count;
                 });
@@ -646,10 +658,70 @@ public class PlayWordGameActivity extends AppCompatActivity implements Screen {
     }
 
     private void refreshBoard() {
-        currentList = getListWithRandomLetters((settings.getSquareBoardSize() * settings.getSquareBoardSize()));
-        letterAdapter.setList(currentList);
-        letterAdapter.notifyDataSetChanged();
-        currentPlayer.setCurrentScore(currentPlayer.getCurrentScore() - 5);
-        scoreText.setText(String.valueOf(currentPlayer.getCurrentScore()));
+        if (resetCount != 0) {
+            currentList = getListWithRandomLetters((settings.getSquareBoardSize() * settings.getSquareBoardSize()));
+            letterAdapter.setList(currentList);
+            letterAdapter.notifyDataSetChanged();
+            currentPlayer.setCurrentScore(currentPlayer.getCurrentScore() - 5);
+            scoreText.setText(String.valueOf(currentPlayer.getCurrentScore()));
+            --resetCount;
+        }
+    }
+
+    private void showScoreAlert() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Score");
+        final TextView score = new TextView(this);
+        score.setText(String.valueOf(currentPlayer.getCurrentScore()));
+        score.setTextAlignment(TextView.TEXT_ALIGNMENT_CENTER);
+        score.setTextSize(25);
+        builder.setView(score);
+
+        builder.setPositiveButton("Main Page", (dialog, which) -> {
+            super.onBackPressed();
+        });
+
+        builder.show();
+
+        WordGameDBHelper dbHelper = new WordGameDBHelper(this);
+        DataUtil.games.clear();
+        dbHelper.addGame(new Game(
+                currentPlayer.getCurrentScore(),
+                MAX_RESET_COUNT - resetCount,
+                usedWords.size(),
+                settings.getSquareBoardSize(),
+                settings.getMinutesToEnd(),
+                currentPlayer.getTopWordScores()[0]
+        ));
+        DataUtil.games.addAll(dbHelper.getGames());
+
+        for (String letters:
+             usedWords) {
+            boolean isExsists = false;
+            for (Word word:
+                 DataUtil.words) {
+                if (word.getWord().equals(letters)) {
+                    word.setUsed(word.getUsed() + 1);
+                    isExsists = true;
+                }
+            }
+
+            if (!isExsists) {
+                DataUtil.words.add(new Word(
+                        letters,
+                        1
+                ));
+                dbHelper.addWord(new Word(
+                        letters,
+                        1
+                ));
+            }
+        }
+
+        dbHelper.clearWords();
+        for (Word word: DataUtil.words) {
+            dbHelper.addWord(word);
+        }
+
     }
 }
