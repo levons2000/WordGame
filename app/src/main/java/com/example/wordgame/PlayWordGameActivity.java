@@ -9,6 +9,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.InputType;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -91,6 +94,23 @@ public class PlayWordGameActivity extends AppCompatActivity implements Screen {
         initRecyclerView();
         initViews();
         startTimer();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.top_bar_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.back_button_item) {
+            this.onBackPressed();
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -428,7 +448,7 @@ public class PlayWordGameActivity extends AppCompatActivity implements Screen {
             if (result) {
                 finalResult = doRightCheck(letters, line, column + 1, ++index);
             } else {
-                finalResult = doRightCheck(letters, line, column + 1, index);
+                return false;
             }
 
         } else {
@@ -464,7 +484,7 @@ public class PlayWordGameActivity extends AppCompatActivity implements Screen {
             if (result) {
                 finalResult = doLeftCheck(letters, line, column - 1, ++index);
             } else {
-                finalResult = doLeftCheck(letters, line, column - 1, index);
+                return false;
             }
 
         } else {
@@ -499,7 +519,7 @@ public class PlayWordGameActivity extends AppCompatActivity implements Screen {
             if (result) {
                 finalResult = doTopCheck(letters, line - 1, column, ++index);
             } else {
-                finalResult = doTopCheck(letters, line - 1, column, index);
+                return false;
             }
 
         } else {
@@ -534,7 +554,7 @@ public class PlayWordGameActivity extends AppCompatActivity implements Screen {
             if (result) {
                 finalResult = doBottomCheck(letters, line + 1, column, ++index);
             } else {
-                finalResult = doBottomCheck(letters, line + 1, column, index);
+                return false;
             }
 
         } else {
@@ -570,7 +590,7 @@ public class PlayWordGameActivity extends AppCompatActivity implements Screen {
             if (result) {
                 finalResult = doTopRightCheck(letters, line - 1, column + 1, ++index);
             } else {
-                finalResult = doTopRightCheck(letters, line - 1, column + 1, index);
+                return false;
             }
 
         } else {
@@ -606,7 +626,7 @@ public class PlayWordGameActivity extends AppCompatActivity implements Screen {
             if (result) {
                 finalResult = doTopLeftCheck(letters, line - 1, column - 1, ++index);
             } else {
-                finalResult = doTopLeftCheck(letters, line - 1, column - 1, index);
+                return false;
             }
 
         } else {
@@ -642,7 +662,7 @@ public class PlayWordGameActivity extends AppCompatActivity implements Screen {
             if (result) {
                 finalResult = doBottomRightCheck(letters, line + 1, column + 1, ++index);
             } else {
-                finalResult = doBottomRightCheck(letters, line + 1, column + 1, index);
+                return false;
             }
 
         } else {
@@ -678,7 +698,7 @@ public class PlayWordGameActivity extends AppCompatActivity implements Screen {
             if (result) {
                 finalResult = doBottomLeftCheck(letters, line + 1, column - 1 , ++index);
             } else {
-                finalResult = doBottomLeftCheck(letters, line + 1, column - 1 , index);
+                return false;
             }
 
         } else {
