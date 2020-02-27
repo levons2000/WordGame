@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.example.wordgame.adapters.LetterAdapter;
 import com.example.wordgame.data.DataUtil;
 import com.example.wordgame.data.WordGameDBHelper;
+import com.example.wordgame.enums.LetterPosition;
 import com.example.wordgame.interfaces.Screen;
 import com.example.wordgame.models.Game;
 import com.example.wordgame.models.LetterModel;
@@ -383,7 +384,7 @@ public class PlayWordGameActivity extends AppCompatActivity implements Screen {
         for (int i = 0; i < (int) Math.sqrt(currentList.size()); ++i) {
             for (int j = 0; j < (int) Math.sqrt(currentList.size()); ++j) {
                 if (currentList.get(i * settings.getSquareBoardSize() + j).getLetter() == characters[0]) {
-                    if (doCharacterMatching(characters, i, j)) {
+                    if (doCharacterMatching(characters, i, j, 1, LetterPosition.UNKNOWN)) {
                         if (!usedWords.contains(String.valueOf(characters))) {
                             int point = 0;
                             usedWords.add(String.valueOf(characters));
@@ -411,15 +412,15 @@ public class PlayWordGameActivity extends AppCompatActivity implements Screen {
         }
     }
 
-    private boolean doCharacterMatching(char[] letters, int line, int column) {
-        return doRightCheck(letters, line, column, 1) ||
-               doLeftCheck(letters, line, column, 1) ||
-               doTopCheck(letters, line, column, 1) ||
-               doBottomCheck(letters, line, column, 1) ||
-               doTopRightCheck(letters, line, column, 1) ||
-               doTopLeftCheck(letters, line, column, 1) ||
-               doBottomRightCheck(letters, line, column, 1) ||
-               doBottomLeftCheck(letters, line, column, 1);
+    private boolean doCharacterMatching(char[] letters, int line, int column, int index,  LetterPosition position) {
+        return (position != LetterPosition.RIGHT && doRightCheck(letters, line, column, index)) ||
+               (position != LetterPosition.LEFT && doLeftCheck(letters, line, column, index)) ||
+               (position != LetterPosition.TOP && doTopCheck(letters, line, column, index)) ||
+               (position != LetterPosition.BOTTOM && doBottomCheck(letters, line, column, index)) ||
+               (position != LetterPosition.RIGHT_TOP && doTopRightCheck(letters, line, column, index)) ||
+               (position != LetterPosition.LEFT_TOP && doTopLeftCheck(letters, line, column, index)) ||
+               (position != LetterPosition.RIGHT_BOTTOM && doBottomRightCheck(letters, line, column, index)) ||
+               (position != LetterPosition.LEFT_BOTTOM && doBottomLeftCheck(letters, line, column, index));
     }
 
     private boolean doRightCheck(char[] letters, int line, int column, int index) {
@@ -446,7 +447,7 @@ public class PlayWordGameActivity extends AppCompatActivity implements Screen {
             }
 
             if (result) {
-                finalResult = doRightCheck(letters, line, column + 1, ++index);
+                finalResult = doCharacterMatching(letters, line, column + 1, ++index, LetterPosition.LEFT);
             } else {
                 return false;
             }
@@ -482,7 +483,7 @@ public class PlayWordGameActivity extends AppCompatActivity implements Screen {
             }
 
             if (result) {
-                finalResult = doLeftCheck(letters, line, column - 1, ++index);
+                finalResult = doCharacterMatching(letters, line, column - 1, ++index, LetterPosition.RIGHT);
             } else {
                 return false;
             }
@@ -517,7 +518,7 @@ public class PlayWordGameActivity extends AppCompatActivity implements Screen {
             }
 
             if (result) {
-                finalResult = doTopCheck(letters, line - 1, column, ++index);
+                finalResult = doCharacterMatching(letters, line - 1, column, ++index, LetterPosition.BOTTOM);
             } else {
                 return false;
             }
@@ -552,7 +553,7 @@ public class PlayWordGameActivity extends AppCompatActivity implements Screen {
             }
 
             if (result) {
-                finalResult = doBottomCheck(letters, line + 1, column, ++index);
+                finalResult = doCharacterMatching(letters, line + 1, column, ++index, LetterPosition.TOP);
             } else {
                 return false;
             }
@@ -588,7 +589,7 @@ public class PlayWordGameActivity extends AppCompatActivity implements Screen {
             }
 
             if (result) {
-                finalResult = doTopRightCheck(letters, line - 1, column + 1, ++index);
+                finalResult = doCharacterMatching(letters, line - 1, column + 1, ++index, LetterPosition.LEFT_BOTTOM);
             } else {
                 return false;
             }
@@ -624,7 +625,7 @@ public class PlayWordGameActivity extends AppCompatActivity implements Screen {
             }
 
             if (result) {
-                finalResult = doTopLeftCheck(letters, line - 1, column - 1, ++index);
+                finalResult = doCharacterMatching(letters, line - 1, column - 1, ++index, LetterPosition.RIGHT_BOTTOM);
             } else {
                 return false;
             }
@@ -660,7 +661,7 @@ public class PlayWordGameActivity extends AppCompatActivity implements Screen {
             }
 
             if (result) {
-                finalResult = doBottomRightCheck(letters, line + 1, column + 1, ++index);
+                finalResult = doCharacterMatching(letters, line + 1, column + 1, ++index, LetterPosition.LEFT_TOP);
             } else {
                 return false;
             }
@@ -696,7 +697,7 @@ public class PlayWordGameActivity extends AppCompatActivity implements Screen {
             }
 
             if (result) {
-                finalResult = doBottomLeftCheck(letters, line + 1, column - 1 , ++index);
+                finalResult = doCharacterMatching(letters, line + 1, column - 1 , ++index, LetterPosition.RIGHT_TOP);
             } else {
                 return false;
             }
