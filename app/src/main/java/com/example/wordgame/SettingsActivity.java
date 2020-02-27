@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.SeekBar;
@@ -34,6 +36,8 @@ public class SettingsActivity extends AppCompatActivity implements Screen, SeekB
     private Spinner weightSpinner;
 
     private Button setWeightButton;
+
+    private Map<String, Integer> weightMap;
 
 
     @Override
@@ -190,13 +194,25 @@ public class SettingsActivity extends AppCompatActivity implements Screen, SeekB
             Toast.makeText(this, "Weight of " + letterSpinner.getSelectedItem().toString() +
                     " now is " + Integer.valueOf(weightSpinner.getSelectedItem().toString()), Toast.LENGTH_SHORT).show();
         });
+
+        letterSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                weightSpinner.setSelection(weightMap.get(letterArray[position]) != null ? weightMap.get(letterArray[position]) - 1 : 0);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 
     private void initSettings(Intent intent) {
         if (intent.getExtras() != null) {
             int minutesToEnd = getIntent().getExtras().getInt("minutesToEnd");
             int squareBoardSize = getIntent().getExtras().getInt("squareBoardSize");
-            Map<String, Integer> weightMap = new HashMap<>();
+            weightMap = new HashMap<>();
             initWeightMap(weightMap, intent);
             settings = new Settings(minutesToEnd, squareBoardSize, weightMap);
         } else {
